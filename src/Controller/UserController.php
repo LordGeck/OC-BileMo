@@ -6,6 +6,8 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Form\UserType;
 use App\Service\UserManager;
+use Hateoas\Representation\CollectionRepresentation;
+use Hateoas\Representation\PaginatedRepresentation;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,12 +23,29 @@ class UserController extends AbstractController
     ) {}
 
     #[Route('/api/users', name: 'user_list', methods: ['GET'])]
-    public function list(): JsonResponse
+    public function list(Request $request): JsonResponse
     {
-        $users = $this->userRepository->findByClient($this->getUser());
+        $page = $request->query->get('page', 1);
+        $limit = $request->query->get('limit', 10);
+
+        $userCount = $this->userRepository->countByClient($this->getUser());
+        $users = $this->userRepository->findByClient(
+            $this->getUser(),
+            [],
+            $limit,
+            $limit*$page-$limit,
+        );
+        $paginatedUsers = new PaginatedRepresentation(
+            new CollectionRepresentation($users),
+            'user_list',
+            [],
+            $page,
+            $limit,
+            ceil($userCount/$limit),
+        );
 
         return JsonResponse::fromJsonString(
-            $this->serializer->serialize($users, 'json')
+            $this->serializer->serialize($paginatedUsers, 'json')
         );
     }
     
@@ -49,14 +68,14 @@ class UserController extends AbstractController
         $form->submit($userData);
         if ($form->isValid()) {
             if ($this->userRepository->findByUsername($user->getUsername())) {
-                return new JsonResponse(['message' => 'Unvalid data'], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+                return new JsonResponse(['message' => 'Invalid data'], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
             }
             $this->userManager->create($user, $this->getUser());
 
-            return new JsonResponse(['message' => 'Succes'], JsonResponse::HTTP_CREATED);
-        }        
+            return new JsonResponse(['message' => 'Success'], JsonResponse::HTTP_CREATED);
+        }
         
-        return new JsonResponse(['message' => 'Unvalid data'], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+        return new JsonResponse(['message' => 'Invalid data'], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     #[Route('/api/users/{slug}', name: 'user_delete', methods: ['DELETE'])]
