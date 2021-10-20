@@ -72,7 +72,7 @@ class UserController extends AbstractController
             }
             $this->userManager->create($user, $this->getUser());
 
-            return new JsonResponse(['message' => 'Success'], JsonResponse::HTTP_CREATED);
+            return new JsonResponse([], JsonResponse::HTTP_CREATED);
         }
         
         return new JsonResponse(['message' => 'Invalid data'], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
@@ -85,8 +85,12 @@ class UserController extends AbstractController
         if (!$user) {
             return new JsonResponse([], JsonResponse::HTTP_NOT_FOUND);
         }
-        $this->userManager->delete($user);
+        if ($user->getClient() === $this->getUser()) {
+            $this->userManager->delete($user);
 
-        return new JsonResponse([], JsonResponse::HTTP_NO_CONTENT);
+            return new JsonResponse([], JsonResponse::HTTP_NO_CONTENT);
+        }
+
+        return new JsonResponse([], JsonResponse::HTTP_UNAUTHORIZED);
     }
 }
