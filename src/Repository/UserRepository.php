@@ -46,5 +46,4 @@ class UserRepository extends ServiceEntityRepository
             ->getSingleScalarResult()
         ;
     }
-
 }
