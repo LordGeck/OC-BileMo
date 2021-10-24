@@ -28,7 +28,7 @@ class UserController extends AbstractController
         $page = $request->query->get('page', 1);
         $limit = $request->query->get('limit', 10);
 
-        $userCount = $this->userRepository->countByClient($this->getUser());
+        $userCount = $this->userRepository->count(['client' => $this->getUser()]);
         $users = $this->userRepository->findByClient(
             $this->getUser(),
             [],
@@ -60,7 +60,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/api/users', name: 'user_new', methods: ['POST'])]
-    public function new(Request $request): JsonResponse
+    public function create(Request $request): JsonResponse
     {
         $userData = json_decode($request->getContent(), true);
         $user = new User();
