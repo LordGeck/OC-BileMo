@@ -24,7 +24,7 @@ class ProductController extends AbstractController
         $page = $request->query->get('page', 1);
         $limit = $request->query->get('limit', 10);
 
-        $productCount = $this->productRepository->countAll();
+        $productCount = $this->productRepository->count([]);
         $products = $this->productRepository->findBy(
             [],
             [],
