@@ -36,12 +36,15 @@ class ProductRepository extends ServiceEntityRepository
     }
     */
 
-    public function countAll(): int
+    /*
+    public function findOneBySomeField($value): ?Product
     {
         return $this->createQueryBuilder('p')
-            ->select('count(p)')
+            ->andWhere('p.exampleField = :val')
+            ->setParameter('val', $value)
             ->getQuery()
-            ->getSingleScalarResult()
-            ;
+            ->getOneOrNullResult()
+        ;
     }
+    */
 }
