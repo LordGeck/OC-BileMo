@@ -1,7 +1,7 @@
 # OC-BileMo
 [![Maintainability](https://api.codeclimate.com/v1/badges/8ab398cbd1c5ca584e43/maintainability)](https://codeclimate.com/github/LordGeck/OC-BileMo/maintainability)
 
-Site communautaire fait dans le cadre de la formation Openclassroom Développeur d'application - PHP / Symfony
+API REST d'un site de vente faite dans le cadre de la formation Openclassroom Développeur d'application - PHP / Symfony
 
 ## Information
 
