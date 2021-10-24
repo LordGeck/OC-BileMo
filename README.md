@@ -19,6 +19,7 @@ API REST d'un site de vente faite dans le cadre de la formation Openclassroom D�
 * Installer les dépendances via composer
 * Editer les variable d'environnement dans le .env
 * * Imformation de connection à la base de donnée
-* * Générer la clé SSL necessaire au fonctionnement de JWT : ```php bin/console lexik:jwt:generate-keypair```
+* * Générer la clé SSL necessaire au fonctionnement de JWT :
+* * ```php bin/console lexik:jwt:generate-keypair```
 * Construire la base de donnée via doctrine
 * Installer le jeu de données via les fixtures
