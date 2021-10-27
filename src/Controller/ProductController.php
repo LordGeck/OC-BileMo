@@ -2,9 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Product;
 use App\Repository\ProductRepository;
 use Hateoas\Representation\CollectionRepresentation;
 use Hateoas\Representation\PaginatedRepresentation;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use OpenApi\Annotations as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +22,30 @@ class ProductController extends AbstractController
         private SerializerInterface $serializer,
     ) {}
 
-    #[Route('/api/products', name: 'product_list', methods: ['GET'])]
+    /**
+     * @Route("/api/products", name="product_list", methods={"GET"})
+     * @OA\Response(
+     *     response=200,
+     *     description="Return a list of products",
+     *     @OA\JsonContent(
+     *        type="array",
+     *        @OA\Items(ref=@Model(type=Product::class))
+     *     )
+     * )
+     * @OA\Parameter(
+     *     name="page",
+     *     in="query",
+     *     description="Page number",
+     *     @OA\Schema(type="string")
+     * )
+     * @OA\Parameter(
+     *     name="limit",
+     *     in="query",
+     *     description="Item by page",
+     *     @OA\Schema(type="string")
+     * )
+     * @OA\Tag(name="Product")
+     */
     public function list(Request $request): JsonResponse
     {
         $page = $request->query->get('page', 1);
@@ -45,7 +72,18 @@ class ProductController extends AbstractController
         );
     }
 
-    #[Route('/api/products/{slug}', name: 'product_show', methods: ['GET'])]
+    /**
+     * @Route("//api/products/{slug}", name="product_show", methods={"GET"})
+     * @OA\Response(
+     *     response=200,
+     *     description="Return a product",
+     *     @OA\JsonContent(
+     *        type="array",
+     *        @OA\Items(ref=@Model(type=Product::class))
+     *     )
+     * )
+     * @OA\Tag(name="Product")
+     */
     public function show(string $slug): JsonResponse
     {
         $product = $this->productRepository->findBySlug($slug);
