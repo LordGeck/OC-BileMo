@@ -5,12 +5,13 @@ API REST d'un site de vente faite dans le cadre de la formation Openclassroom D�
 
 ## Information
 
-* Technologies utilisées
-* * Symfony 5.3
-* * Php 8.0.0
-* * Jwt-authentication-bundle 2.12.6
-* * Hateoas-bundle 2.2.0
-* * Composer 1.11.99
+Technologies utilisées
+* Symfony 5.3
+* Php 8.0.0
+* Jwt-authentication-bundle 2.12.6
+* Hateoas-bundle 2.2.0
+* NelmioApiDocBundle 4.6
+* Composer 1.11.99
 
 ## Installer le projet 
 
